@@ -2,14 +2,49 @@
 ## functions do
 
 ## Write a short comment describing this function
-
+## function to evaluate matrix
+## only a valid matrix input is accepted
 makeCacheMatrix <- function(x = matrix()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  
+  ## takes matrix as the input for makeCachematrix
+  get <- function() x
+  setmatrix <- function(matrix) m <<- matrix
+  
+  # returns matrix
+  getmatrix <- function() m
+  list(set = set, get = get,
+       setmatrix = setmatrix,
+       getmatrix = getmatrix)
+}
 
+## it always assumes matrix is invertible 
+cacheSolve<- function(x, ...) {
+  m <- x$getmatrix()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  mat.data <- x$get()
+  m <- solve(mat.data)
+  x$setmatrix(m)
+  m
 }
 
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+#> x = matrix(c(1,5,32,0,0,2,5,9,1),nrow =3)
+#> m = makeCacheMatrix(x)
+#> m$get()
+#[,1] [,2] [,3]
+#[1,]    1    0    5
+#[2,]    5    0    9
+#[3,]   32    2    1
+#> cacheSolve(m)
+#[,1]     [,2] [,3]
+#[1,] -0.56250  0.31250  0.0
+#[2,]  8.84375 -4.96875  0.5
+#[3,]  0.31250 -0.06250  0.0
